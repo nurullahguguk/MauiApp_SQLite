@@ -2,23 +2,35 @@
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
 
-	public MainPage()
-	{
-		InitializeComponent();
-	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
-	{
-		count++;
+    public MainPage()
+    {
+        InitializeComponent();
+        Stu_List_View.ItemsSource = App.DbTrans.GetAllStudents();
+    }
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+    private void Btn_Add_Clicked(object sender, EventArgs e)
+    {
+        App.DbTrans.Add(new Models.Student
+        {
+            Name = Stu_Name.Text,
+            Department=Stu_Dept.Text,
+        }); 
+        Stu_List_View.ItemsSource=App.DbTrans.GetAllStudents();
+    }
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
-	}
+
+    private void Btn_Delete_Clicked(object sender, EventArgs e)
+    {
+        Button button =(Button)sender;
+        App.DbTrans.Delete((int)button.BindingContext);
+        Stu_List_View.ItemsSource = App.DbTrans.GetAllStudents();
+    }
+
+    private void Btn_Show_Clicked(object sender, EventArgs e)
+    {
+        Stu_List_View.ItemsSource=App.DbTrans.GetAllStudents();
+    }
 }
 

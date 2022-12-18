@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MauiApp_SQLite.DataTransactions;
+using Microsoft.Extensions.Logging;
 
 namespace MauiApp_SQLite;
 
@@ -18,7 +19,12 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+		string _DbPath = Path.Combine(FileSystem.AppDataDirectory, "Student.db");
 
-		return builder.Build();
+		builder.Services.AddSingleton(s=>
+		ActivatorUtilities.CreateInstance<DbTrans>(s, _DbPath));
+
+
+        return builder.Build();
 	}
 }
